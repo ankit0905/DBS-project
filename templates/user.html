@@ -1,0 +1,75 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+    <p>{{ error }}</p>
+
+    <div class = "tabdiv">
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a class="tablink" href="#search" aria-controls="search" role="tab" data-toggle="tab">Search</a></li>
+        <li role="presentation"><a class="tablink" href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="search">
+            <br/><br/>
+            <form class="form-inline" action="" method="post" name="booksearch">
+                <div class="input-group input-group-lg" style="width: 350px;">
+                    <span class="input-group-addon glyphicon glyphicon-search" aria-hidden="true"></span>
+                    <input type="text" name="search" class="form-control" placeholder="Search Book" aria-describedby="basic-addon1" value="{{ request.form.search }}" required>
+                </div>
+                &nbsp;&nbsp;
+                <input class="btn btn-success btn-lg" type="submit" value="Search By Name" name="searchbyname">
+                <input class="btn btn-success btn-lg" type="submit" value="Search By Author" name="searchbyauthor">
+            </form>
+            <br/>
+            {% if books[0] is not defined %}
+                <div class = "container bookdiv">
+                    <br/>
+                    <p>No Results Found.</p>
+                </div>
+            {% endif %}
+            {% for book in books %}
+                <div class="container bookdiv">
+                    <h3>{{ book[1] }}</h3>
+                    <p><b>Book ID : </b>{{ book[0] }}</p>
+                    <p><b>Authors : </b>
+                        {% for author in book[6] %}
+                            {{ author }},
+                        {% endfor %}
+                    </p>
+                    <p><b>Publication: </b>{{ book[3] }}</p>
+                    <p><b>Category: </b>{{ book[2] }}</p>
+                    <p><b>Availibility: </b>
+                        {% if book[4] == '' or book[4] == None or book[4] == 'NULL' %}
+                            Yes
+                        {% else %}
+                            Due on {{ book[4] }} (Borrower ID: {{ book[5] }} )
+                        {% endif %}
+                    </p>
+                    <p><b>Books: </b>
+                        {% for item in user_books %}
+                            {{ item[1] }}
+                        {% endfor %}
+                    </p>
+                </div>
+                <br/>
+            {% endfor %}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="profile">
+            <br/>
+            <p style="color: floralwhite; font-size: larger;">&nbsp;&nbsp;<b>UID</b>: {{ profile[0] }}</p>
+            <p style="color: floralwhite; font-size: larger;">&nbsp;&nbsp;<b>Name</b>: {{ profile[1] }}</p>
+            <p style="color: floralwhite; font-size: larger;">&nbsp;&nbsp;<b>Email</b>: {{ profile[2] }}</p>
+            <p style="color: floralwhite; font-size: larger;">&nbsp;&nbsp;<b>Phone</b>: {{ profile[3] }}</p>
+            <p style="color: floralwhite; font-size: larger;">&nbsp;&nbsp;<b>Fine</b>: {{ profile[5] }}</p>
+            <p style="color: floralwhite; font-size: larger;">&nbsp;&nbsp;<b>UserType</b>: {{ profile[6] }}</p>
+        </div>
+    </div>
+
+    </div>
+
+{% endblock %}

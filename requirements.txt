@@ -1,2 +1,4 @@
 # will contain required modules
+Flask==0.12.1
+passlib==1.7.1
 

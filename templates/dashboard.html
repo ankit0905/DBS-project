@@ -1,0 +1,153 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+    <p>{{ error }}</p>
+
+    <div class = "tabdiv">
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a class="tablink" href="#search" aria-controls="search" role="tab" data-toggle="tab">Search</a></li>
+        <li role="presentation"><a class="tablink" href="#user" aria-controls="user" role="tab" data-toggle="tab">Add User</a></li>
+        <li role="presentation"><a class="tablink" href="#book" aria-controls="book" role="tab" data-toggle="tab">Add/Update Books</a></li>
+        <li role="presentation"><a class="tablink" href="#bookdelete" aria-controls="user" role="tab" data-toggle="tab">Delete Book</a></li>
+        <li role="presentation"><a class="tablink" href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="search">
+            <br/><br/>
+            <form class="form-inline" action="" method="post" name="booksearch">
+                <div class="input-group input-group-lg" style="width: 350px;">
+                    <span class="input-group-addon glyphicon glyphicon-search" aria-hidden="true"></span>
+                    <input type="text" name="search" class="form-control" placeholder="Search Book" aria-describedby="basic-addon1" value="{{ request.form.search }}" required>
+                </div>
+                &nbsp;&nbsp;
+                <input class="btn btn-success btn-lg" type="submit" value="Search By Name" name="searchbyname">
+                <input class="btn btn-success btn-lg" type="submit" value="Search By Author" name="searchbyauthor">
+            </form>
+            <br/>
+            {% if books[0] is not defined %}
+                <div class = "container bookdiv">
+                    <br/>
+                    <p>No Results Found.</p>
+                </div>
+            {% endif %}
+            {% for book in books %}
+                <div class="container bookdiv">
+                    <h3>{{ book[1] }}</h3>
+                    <p><b>Book ID : </b>{{ book[0] }}</p>
+                    <p><b>Authors : </b>
+                        {% for author in book[6] %}
+                            {{ author }},
+                        {% endfor %}
+                    </p>
+                    <p><b>Publication: </b>{{ book[3] }}</p>
+                    <p><b>Category: </b>{{ book[2] }}</p>
+                    <p><b>Availibility: </b>
+                        {% if book[4] == '' or book[4] == None or book[4] == 'NULL' %}
+                            Yes
+                        {% else %}
+                            Due on {{ book[4] }} (Borrower ID: {{ book[5] }} )
+                        {% endif %}
+                    </p>
+                    <p><b>Books: </b>
+                        {% for item in user_books %}
+                            {{ item[1] }}
+                        {% endfor %}
+                    </p>
+                </div>
+                <br/>
+            {% endfor %}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="user">
+            <br/><br/>
+            <form action="" method="post">
+                <div class="input-group input-group-lg" style="width: 350px;">
+                    <span class="input-group-addon glyphicon glyphicon-user" aria-hidden="true"></span>
+                    <input data-toggle="tooltip" type="text" name="usertype" class="form-control" placeholder="User Type" aria-describedby="basic-addon1" title="Use Admin, Student OR Faculty" value="{{ request.form.usertype }}">
+                </div>
+                <br/>
+                <div class="input-group input-group-lg" style="width: 700px;">
+                    <span class="input-group-addon" id="sizing-addon1">@</span>
+                    <input type="text" name="uid" class="form-control" placeholder="User ID" aria-describedby="sizing-addon1" value="{{ request.form.uid }}" required>
+                    <span class="input-group-addon">&nbsp;&nbsp;&nbsp;</span>
+                    <input type="text" name="uname" class="form-control" placeholder="Name" aria-describedby="sizing-addon1" value="{{ request.form.uname }}">
+                </div>
+                <br/>
+                <div class="input-group input-group-lg" style="width: 700px;">
+                    <span class="input-group-addon glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                    <input type="text" name="email" class="form-control" placeholder="Email" aria-describedby="sizing-addon1" value="{{ request.form.email }}">
+                    <span class="input-group-addon">&nbsp;&nbsp;&nbsp;</span>
+                    <input type="text" name="phone" class="form-control" placeholder="Phone" aria-describedby="sizing-addon1" value="{{ request.form.phone }}">
+                </div>
+                <br/>
+                <div class="input-group input-group-lg" style="width: 700px;">
+                    <span class="input-group-addon"> ₹ </span>
+                    <input type="text" name="fine" class="form-control" placeholder="Fine" aria-describedby="sizing-addon1" value="{{ request.form.fine }}">
+                </div>
+                <br/>
+                <input class="btn btn-danger btn-lg" type="submit" value="Insert" name="userinsert">
+                <!--<input class="btn btn-danger btn-lg" type="submit" value="Update" name="userupdate">-->
+            </form>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="book">
+            <br/><br/>
+            <form action="" method="post">
+                <div class="input-group input-group-lg" style="width: 350px;">
+                    <span class="input-group-addon" id="sizing-addon1">@</span>
+                    <input type="text" name="bid" class="form-control" placeholder="Book ID" aria-describedby="sizing-addon1" value="{{ request.form.bid }}" required>
+                </div>
+                <br/>
+                <div  class="input-group input-group-lg" style="width: 700px;">
+                    <span class="input-group-addon glyphicon glyphicon-book" aria-hidden="true"></span>
+                    <input type="text" name="title" class="form-control" placeholder="Book Title" aria-describedby="sizing-addon1" value="{{ request.form.title }}">
+                    <span class="input-group-addon">&nbsp;&nbsp;&nbsp;</span>
+                    <input type="text" name="category" class="form-control" placeholder="Category" aria-describedby="sizing-addon1" value="{{ request.form.category }}">
+                </div>
+                <br/>
+                <div class="input-group input-group-lg" style="width: 700px;">
+                    <span class="input-group-addon glyphicon glyphicon-tag" aria-hidden="true"></span>
+                    <input type="text" name="author" class="form-control" placeholder="Author" aria-describedby="sizing-addon1" value="{{ request.form.author }}">
+                    <span class="input-group-addon">&nbsp;&nbsp;&nbsp;</span>
+                    <input type="text" name="publication" class="form-control" placeholder="Publication" aria-describedby="sizing-addon1" value="{{ request.form.publication }}">
+                </div>
+                <br/>
+                <div class="input-group input-group-lg" style="width: 700px;">
+                    <span class="input-group-addon glyphicon glyphicon-time" aria-hidden="true"></span>
+                    <input type="text" name="duedate" class="form-control" placeholder="Due Date" aria-describedby="sizing-addon1" value="{{ request.form.duedate }}">
+                    <span class="input-group-addon">&nbsp;&nbsp;&nbsp;</span>
+                    <input type="text" name="borrower" class="form-control" placeholder="Borrower ID" aria-describedby="sizing-addon1" value="{{ request.form.borrower }}">
+                </div>
+                <br/>
+                <input class="btn btn-danger btn-lg" type="submit" value="Add" name="bookadd">
+                <input class="btn btn-danger btn-lg" type="submit" value="Update" name="bookupdate">
+            </form>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="bookdelete">
+            <br/><br/>
+            <form action="" method="post">
+                <div class="input-group input-group-lg" style="width: 350px;">
+                    <span class="input-group-addon" id="sizing-addon1">@</span>
+                    <input type="text" name="bid" class="form-control" placeholder="Book ID" aria-describedby="sizing-addon1" value="{{ request.form.bid }}" required>
+                </div>
+                <br/>
+                <input class="btn btn-danger btn-lg" type="submit" value="Delete Book" name="bookdelete">
+            </form>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="profile">
+            <br/>
+            <p style="color: floralwhite; font-size: larger;">&nbsp;&nbsp;<b>UID</b>: {{ profile[0] }}</p>
+            <p style="color: floralwhite; font-size: larger;">&nbsp;&nbsp;<b>Name</b>: {{ profile[1] }}</p>
+            <p style="color: floralwhite; font-size: larger;">&nbsp;&nbsp;<b>Email</b>: {{ profile[2] }}</p>
+            <p style="color: floralwhite; font-size: larger;">&nbsp;&nbsp;<b>Phone</b>: {{ profile[3] }}</p>
+            <p style="color: floralwhite; font-size: larger;">&nbsp;&nbsp;<b>Fine</b>: {{ profile[5] }}</p>
+            <p style="color: floralwhite; font-size: larger;">&nbsp;&nbsp;<b>UserType</b>: {{ profile[6] }}</p>
+        </div>
+    </div>
+
+    </div>
+
+{% endblock %}

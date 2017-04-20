@@ -5,16 +5,74 @@
         <meta charset="utf-8">
         <meta content="width=device-width,initial-scale=1" name=viewport>
         <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
         <link rel="shortcut icon" href="{{ url_for('static',filename='favicon.ico') }}">
         <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+        <link href='//fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
     </head>
-    
     <header>
+        <div class="navbar navbar-inverse navmenu" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Home</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav" style="float:right;">
+                        <li><a href="/">About</a></li>
+                        {% if session.logged_in %}
+                            {% if session.Admin %}
+                                <li><a href="/dashboard/admin">Dashboard</a></li>
+                            {% elif session.Student or session.Faculty %}
+                                <li><a href="/dashboard/user">Dashboard</a></li>
+                            {% endif %}
+                            <li><a href="/logout/">Logout</a></li>
+                        {% else %}
+                            <li><a href="/login/">Login</a></li>
+                        {% endif %}
+                        <!--<li><a href="#">Register</a></li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
     </header>
     
     <body>
-    
+        <div class = "container" style="min-height:100% width:80%">
+        {% with messages = get_flashed_messages() %}
+        	{% if messages %}
+        		{% for message in messages %}
+        			<div class="alert alert-warning alert-dismissible" role="alert">
+        			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    				<span aria-hidden="true">&times;</span>
+    				</button>
+    				{{ message }}
+        			</div>
+
+        		{% endfor %}
+        	{% endif %}
+        {% endwith %}
+
     	{% block body %} {% endblock %}
-    	
+    	</div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap/bootstrap-dropdown.js') }}"></script>
+        <script>
+            $(document).ready(function(){
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+            $('.dropdown-menu').on( 'click', 'a', function() {
+                var text = $(this).html();
+                var htmlText = text + ' <span class="caret"></span>';
+                $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
+            });
+        </script>
     </body>
 </html>

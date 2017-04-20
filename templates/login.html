@@ -1,0 +1,51 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+<body>
+
+    <h4>{{ error }}</h4>
+
+	<div class="container mydiv">
+		<!--<h4 style="color:white;">Please Login:</h4>-->
+        <br/>
+        <div id="userlogo">
+            <img width="40px" height="40px" class="userimg" src="/static/images/user"/>
+        </div>
+		<br/>
+		<form action="" class="form-inline" method="post">
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon" id="sizing-addon1">@</span>
+                <input type="text" name="username" class="form-control" placeholder="Username" aria-describedby="sizing-addon1" value="{{ request.form.username }}" required>
+            </div>
+            <br/><br/>
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon glyphicon glyphicon-lock" id="sizing-addon2" aria-hidden="true"></span>
+                <input type="password" name="password" class="form-control" placeholder="Password" aria-describedby="sizing-addon2" value="{{ request.form.password }}" required>
+            </div>
+            <br/><br/>
+			<!--<input type="text" class="form-control" placeholder="Username" name="username" value="{{ request.form.username }}">
+			<br/><br/>
+            <input type="password" class="form-control" placeholder="Password" name="password" value="{{ request.form.password }}">
+			<br/><br/> -->
+            &nbsp;&nbsp;&nbsp;
+            <label class="radio-inline">
+                <input type="radio" name="usertype" id="inlineRadio1" value="Student" required> <p style="color:white; font-size: medium">Student</p>
+            </label>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <label class="radio-inline">
+                <input type="radio" name="usertype" id="inlineRadio2" value="Faculty"> <p style="color:white; font-size: medium;">Faculty</p>
+            </label>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <label class="radio-inline">
+                <input type="radio" name="usertype" id="inlineRadio3" value="Admin"><p style="color:white; font-size: medium;">Admin</p>
+            </label>
+            <br/><br/>
+            <input class="btn btn-danger btn-lg" type="submit" value="Login" style="width: 320px;">
+		</form>
+
+	</div>
+
+</body>
+
+{% endblock %}

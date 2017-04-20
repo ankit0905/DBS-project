@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Flask App</title>
+        <meta charset="utf-8">
+        <meta content="width=device-width,initial-scale=1" name=viewport>
+        <link href="static/css/bootstrap.min.css" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+        <link rel="shortcut icon" href="{{ url_for('static',filename='favicon.ico') }}">
+        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+        <link href='//fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
+    </head>
+    <header>
+       <div class="navbar navbar-inverse navmenu" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Home</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav" style="float:right;">
+                        <li><a href="/">About</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <body>
+    <div class="container">
+        <p>Welcome</p>
+    </div>
+    </body>
+</html>
